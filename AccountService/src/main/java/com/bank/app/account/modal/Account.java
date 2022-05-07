@@ -66,7 +66,6 @@ public class Account {
 	private int accountBal;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	//@JoinColumn(name = "userId", nullable = false)
 	private User user;
 
 }
