@@ -19,7 +19,7 @@ public interface AccountService {
 
 	public ResponseEntity<List<Account>> getAllAccount();
 
-	//public ResponseEntity<List<AccountDto>> getAccountbyUserId(int userId);
+	public ResponseEntity<List<Account>> getAccountbyUserId(int userId);
 	//user ke pass hoga all account with user id
 	//account ke pass hoga user detail of particular account number
 }

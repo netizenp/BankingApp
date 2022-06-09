@@ -7,15 +7,16 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
-@Getter
-@Table(name = "user")
-@Entity
+
+@Data
 public class User {
 
-	@Id
 	private int userId;
+
 	private String name;
 	private String emailId;
 	private String mobNo;

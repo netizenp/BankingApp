@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.bank.app.account.dao.AccountRepo;
+import com.bank.app.account.feign.UserFeign;
 import com.bank.app.account.modal.Account;
+import com.bank.app.account.modal.User;
 import com.bank.app.account.utility.ResponseData;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,9 @@ public class AccountServiceImpl implements AccountService {
 	
 	@Autowired
 	private AccountRepo accountRepo;
+	
+	@Autowired
+	private UserFeign userFeign;
 
 	/**
 	 * add user object into database return 201 status code
@@ -30,13 +35,20 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public ResponseEntity<ResponseData> addAccount(Account account, int userId) {
 		log.info("service: add account with provided account object");
-		accountRepo.save(account);
-		log.info("provided account object is saved");
-		List<String> message = new ArrayList<>();
-		message.add("Entity successfully created");
-		ResponseData responseData = new ResponseData(account, "true", message);
-		log.info("return the response with true success");
-		return ResponseEntity.status(HttpStatus.CREATED).body(responseData);
+		ResponseEntity<User> userResponseEntity = userFeign.getUser(userId);
+		log.info("user proxy me hi dikat aa gayi");
+		if(userResponseEntity.hasBody()) {
+			account.setUserId(userResponseEntity.getBody().getUserId());
+			accountRepo.save(account);
+			log.info("provided account object is saved");
+			List<String> message = new ArrayList<>();
+			message.add("Account created successfully");
+			ResponseData responseData = new ResponseData(account, "true", message);
+			log.info("return the response with true success");
+			return ResponseEntity.status(HttpStatus.CREATED).body(responseData);
+		}
+		log.error("no account object is found with given account id");
+		throw new EntityNotFoundException("User with user ID: " + userId + " not exist");
 	}
 
 	/**
@@ -57,7 +69,7 @@ public class AccountServiceImpl implements AccountService {
 			return ResponseEntity.status(HttpStatus.OK).body(responseData);
 		}
 		log.error("no account object is found with given account id");
-		throw new EntityNotFoundException();
+		throw new EntityNotFoundException("Account with account Number: " + account.getAccountId() + " not exist");
 	}
 
 	/**
@@ -70,7 +82,6 @@ public class AccountServiceImpl implements AccountService {
 		Optional<Account> account = accountRepo.findById((long) accountId);
 		if (account.isPresent()) {
 			log.info("account object with given account id is present");
-			//account.get().setUser(null);
 			accountRepo.deleteById(accountId);			
 			log.info("account object with given account id is deleted");
 			List<String> message = new ArrayList<>();
@@ -116,12 +127,12 @@ public class AccountServiceImpl implements AccountService {
 	/**
 	 * return the list of objects associated with provided user id
 	 */
-//	@Override
-//	public ResponseEntity<List<AccountDto>> getAccountbyUserId(int userId) {
-//		List<AccountDto> accountDto = accountDtoRepo.findByUserDtoId(userId);
-//		if (!accountDto.isEmpty()) {
-//			return ResponseEntity.ok().body(accountDto);
-//		}
-//		throw new NotFoundException();
-//	}
+	@Override
+	public ResponseEntity<List<Account>> getAccountbyUserId(int userId) {
+		List<Account> accountDto = accountRepo.findByUserId(userId);
+		if (!accountDto.isEmpty()) {
+			return ResponseEntity.ok().body(accountDto);
+		}
+		throw new EntityNotFoundException();
+	}
 }

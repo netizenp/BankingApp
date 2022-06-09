@@ -36,8 +36,9 @@ public class AccountController {
 	 * @return This method receives the Account Object in order to add the Account
 	 *         Entity
 	 */
-	@PostMapping("/addaccount")
+	@PostMapping("/addaccount/{userId}")
 	public ResponseEntity<ResponseData> addAccount(@RequestBody Account account, @PathVariable int userId) {
+		System.out.println(account);
 		log.info("hit api for add account");
 		accountValidation.accountValidate(account);
 		log.info("Anotation based validation for account object is done");
@@ -46,7 +47,6 @@ public class AccountController {
 
 	/**
 	 * @param account
-	 * @param accountId
 	 * @return This Method takes the Account Object in order to update the
 	 *         associated Account Entity
 	 */
@@ -94,9 +94,9 @@ public class AccountController {
 	 * @return This method takes the user id and fetch all account associated with
 	 *         user id and return the list
 	 */
-//	@GetMapping("/getallaccount/userid/{userId}")
-//	public ResponseEntity<List<Account>> getAllAccountByUserId(@PathVariable int userId) {
-//		log.info("hit api in order to fetch all available accounts associated with given user id");
-//		return accountService.getAccountbyUserId(userId);
-//	}
+	@GetMapping("/getallaccount/userid/{userId}")
+	public ResponseEntity<List<Account>> getAllAccountByUserId(@PathVariable int userId) {
+		log.info("hit api in order to fetch all available accounts associated with given user id");
+		return accountService.getAccountbyUserId(userId);
+	}
 }

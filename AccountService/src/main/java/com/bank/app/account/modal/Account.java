@@ -1,17 +1,6 @@
 package com.bank.app.account.modal;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -60,13 +49,13 @@ public class Account {
 
 	@NotNull(message = "Account type should be S or C")
 	@Enumerated(EnumType.STRING)
+	@Column(name = "accounttype")
 	private AccountType accountType;
 
 	@Column(name = "accountbal", nullable = false)
 	private int accountBal;
 
-	@ManyToOne(cascade = CascadeType.ALL)
-	//@JoinColumn(name = "userId", nullable = false)
-	private User user;
+	@Column(name = "userid")
+	private int userId;
 
 }
