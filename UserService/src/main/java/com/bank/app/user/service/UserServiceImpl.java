@@ -48,7 +48,6 @@ public class UserServiceImpl implements UserService {
 		log.info("service: update user object with given user id");
 		if (userRepo.existsById(user.getUserId())) {
 			log.info("user object with given user id is present");
-			user.setUserId(user.getUserId());
 			userRepo.save(user);
 			log.info("user object with given user id is updated");
 			List<String> message = new ArrayList<>();

@@ -84,13 +84,4 @@ public class User {
 	@Column(name = "gender", nullable = false)
 	private Gender gender;
 
-//	public User(UserDto userDto) {
-//		super();
-//		this.name = userDto.getName();
-//		this.emailId = userDto.getEmailId();
-//		this.mobNo = userDto.getMobNo();
-//		this.secondMobNo = userDto.getSecondMobNo();
-//		this.dob = userDto.getDob();
-//		this.gender = userDto.getGender();
-//	}
 }

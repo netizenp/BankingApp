@@ -45,7 +45,6 @@ public class UserController {
 
 	/**
 	 * @param user
-	 * @param userId
 	 * @return This Method takes the User Object in order to update the associated
 	 *         User Entity
 	 */
